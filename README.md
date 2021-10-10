@@ -90,7 +90,7 @@ With our *fully automated user creator* creating users is no problem at all:
 
 ![image6](media/image6.png)
 
-**3.** If everything goes well, the user is created on the *MikroTik*, added to the Google Sheets table (more on that [later](#How-to-Google-Sheets)) and it will start printing:
+**3.** If everything goes well, the user is created on the *MikroTik*, added to the Google Sheets table (more on that [later](#-how-to-google-sheets)) and it will start printing:
 
 ![image11](media/image11.png)
 
@@ -104,7 +104,7 @@ With our *fully automated user creator* creating users is no problem at all:
 
 Simply open the users panel from the main web page or by entering its URL (`localhost:1234/users` by default). The rest *should* be self-explanatory.
 
-... TODO ...
+![users](media/users.png)
 
 ### Troubleshooting
 
@@ -142,7 +142,14 @@ Simply open the users panel from the main web page or by entering its URL (`loca
     "sheets": {
         "id": "<Google-Sheets-ID>", // Google
         "table": "<Google-Sheets-Table>" // Table within the Sheet
-    }
+    },
+    "velops": [
+      {
+          "name": "Center", // Displayname in ping-monitor
+          "ip": "10.20.1.0", // IP-Address to be tested
+          "active": true // Whether the velop is currently in use and therefshould be tested for
+      }
+  ]
 }
 ```
 

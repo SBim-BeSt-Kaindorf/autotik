@@ -1,0 +1,69 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+body > header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: absolute;
+    top: 0; left: 0;
+    box-sizing: border-box;
+    padding: 15px;
+}
+
+body > header a {
+    color: #4d1056;
+    text-decoration: none;
+}
+
+body > header svg {
+    width: 2em;
+    height: 2em;
+}
+
+body > img {
+    width: auto;
+    height: 5em;
+}
+
+body > h1 {
+    font-family: sans-serif;
+}
+
+body > form tr.optional {
+    color: #888;
+}
+
+body > form input, body > form select {
+    border: 1.5px solid #ddd;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+body > form input[type="submit"] {
+    width: 100%;
+}
+
+body > form input[type="submit"]:hover {
+    cursor: pointer;
+}
+
+body > form input:focus, body > form select:focus {
+    outline: none;
+}
+
+body > form #status-log {
+    margin-top: 15px;
+    font-family: monospace;
+}

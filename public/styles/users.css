@@ -1,0 +1,105 @@
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  font-family: sans-serif;
+}
+
+body > header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 15px;
+  box-shadow: 0 1px 10px #eee;
+}
+
+body > header svg {
+  width: 2em;
+  height: 2em;
+  color: #4d1056;
+}
+
+body > article {
+  flex-grow: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+body > article .table {
+  height: 75%;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+body > article table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+body > article .stats {
+  height: 100%;
+}
+
+body > article tr:nth-child(odd) {
+  background-color: #eee;
+}
+
+body > article th {
+  text-align: left;
+  color: #fff;
+  background-color: #4d1056;
+  padding: .5em;
+}
+
+body > article th:first-child {
+  border-radius: 5px 0 0 0;
+}
+
+body > article th:last-child {
+  border-radius: 0 5px 0 0;
+}
+
+body > article td {
+  padding: .5em;
+}
+
+body > article td.password {
+  font-family: monospace;
+  font-size: 1.1em;
+}
+
+body > article td.sessions {
+  text-align: center;
+}
+
+body > article td:last-child {
+  text-align: center;
+}
+
+body > article td svg {
+  width: 1em;
+  height: 1em;
+  transition: .15s ease;
+}
+
+body > article td svg:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+body > article .stats canvas {
+  height: 100%;
+}

@@ -1,0 +1,21 @@
+{
+  "port": 1234,
+  "printer": "<Printer-IP>",
+  "phone": "<Support Phone Number>",
+  "booth": "SXXX",
+  "wifi": {
+      "ssid": "<SSID>",
+      "pass": "<PWD>"
+  },
+  "mgm": {
+      "host": "<Mikrotik-IP>",
+      "port": 22,
+      "user": "<username>",
+      "pass": "<pwd>",
+      "user_server": "<Hotspot>"
+  },
+  "sheets": {
+      "id": "<Google-Sheets-ID>",
+      "table": "<Google-Sheets-Table>"
+  }
+}

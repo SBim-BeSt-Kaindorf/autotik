@@ -51,6 +51,10 @@ body > article table {
 
 body > article .stats {
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: stretch;
 }
 
 body > article tr:nth-child(odd) {
@@ -102,4 +106,37 @@ body > article td svg:hover {
 
 body > article .stats canvas {
   height: 100%;
+}
+
+body > article .stats > div {
+  flex-grow: 1;
+  width: 100%;
+}
+
+body > article .stats #pings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+body > article .host-ping {
+  width: 5em;
+  height: 5em;
+  border-radius: 3px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  margin: .2em;
+}
+
+body > article .host-ping.alive {
+  background-color: #00FF64;
+}
+
+body > article .host-ping.dead {
+  background-color: #FF004F;
 }

@@ -47,7 +47,11 @@
       </table>
     </div>
     <div class="stats">
-      <canvas id="user-stats"></canvas>
+      <div>
+        <canvas id="user-stats"></canvas>
+      </div>
+      <div id="pings">
+      </div>
     </div>
   </article>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -91,6 +95,7 @@
                         },],
                       },
                       options: {
+                        responsive: true,
                         maintainAspectRatio: false,
                         animation: {
                           duration: 0,
@@ -99,7 +104,7 @@
                           x: {
                             ticks: {
                               callback: (value, index, values) => {
-                                let d = new Date(cuTime-(values.length-index)*60*1000);
+                                let d = new Date(cuTime-(values.length-index)*30*1000);
                                 return `${z(d.getHours())}:${z(d.getMinutes())}`;
                               },
                             },
@@ -117,7 +122,8 @@
                     };
       let chart = new Chart(document.getElementById('user-stats'), config);
 
-      window.setInterval(() => fetch(`/api/user-stats`)
+      function updateUsers() {
+        fetch(`/api/user-stats`)
         .then(res => res.json())
         .then(res => {
           cuTime = new Date();
@@ -125,7 +131,29 @@
           config.data.labels = [...new Array(res.length).keys(),];
           config.data.datasets[0].data = res;
           chart = new Chart(document.getElementById('user-stats'), config);
-        }), 1000);
+        });
+      }
+      window.setInterval(updateUsers, 1000*30);
+      updateUsers();
+
+      function updatePings() {
+        doPings().then(hosts => {
+          const target = document.getElementById('pings');
+          target.innerHTML = '';
+          hosts.forEach(h => {
+            const div = document.createElement('div');
+            div.classList.add('host-ping');
+            div.innerHTML = `
+<b>${h.name}</b>
+<i>${h.ip}</i>
+            `;
+            div.classList.add(h.alive ? 'alive' : 'dead');
+            target.appendChild(div);
+          });
+        }).catch(e => console.log(e));
+      }
+      window.setInterval(updatePings, 1000);
+      updatePings();
     };
   </script>
 </body>

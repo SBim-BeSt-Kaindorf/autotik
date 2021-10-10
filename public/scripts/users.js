@@ -35,3 +35,18 @@ function getSessions(username) {
             });
     });
 }
+
+/**
+ * Performs pings to all active
+ * velops and returns the results.
+ */
+function doPings() {
+    return new Promise((resolve, reject) => {
+        fetch(`/api/ping`)
+            .then(res => res.json())
+            .then(res => {
+                if (!res.success) reject(`Fehler: ${res.error}`);
+                resolve(res.pings);
+            });
+    })
+}

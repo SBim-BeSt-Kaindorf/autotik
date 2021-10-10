@@ -17,5 +17,12 @@
   "sheets": {
       "id": "<Google-Sheets-ID>",
       "table": "<Google-Sheets-Table>"
-  }
+  },
+  "velops": [
+      {
+          "name": "Center",
+          "ip": "10.20.1.0",
+          "active": true
+      }
+  ]
 }

@@ -16,7 +16,8 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
     "googleapis": "^88.2.0",
-    "mikrotik-node": "^1.0.0"
+    "mikrotik-node": "^1.0.0",
+    "ping": "^0.4.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.13"

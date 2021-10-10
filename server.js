@@ -5,19 +5,24 @@ const exphbs = require('express-handlebars');
 const User = require('./models/User');
 const google = require('./google');
 const MikroNode = require('mikrotik-node').MikroNode;
+const ping = require('ping');
+const fs = require('fs/promises');
 
 const config = require(path.resolve(__dirname, 'config.json'));
+let velops = config.velops;
 const creds = require(path.resolve(__dirname, 'credentials.json'));
 const app = express();
 
+const TESTING = false;
 let history = [];
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.use(bodyParser.json());
 
-console.log(`[+] Connected to mgm @ ${config.mgm.host} ... `);
-
+ping.sys.probe(config.mgm.host, (isAlive) => {
+  console.log(`[${isAlive ? '+' : '-'}] Mgm @ ${config.mgm.host} is${(!isAlive?' not ':' ')}reachable`);
+});
 
 /**
  * Executes the given command on the MikroTik router/firewall
@@ -144,11 +149,27 @@ app.get('/api/printer', (req, res) => {
 });
 
 app.get('/api/sessions/:username', async (req, res) => {
-  res.send({ success: true, sessions: (await getActiveSessions(req.params.username)).length, });
+  if (!TESTING) {
+    res.send({ success: true, sessions: (await getActiveSessions(req.params.username)).length, });
+  } else {
+    res.send({ success: true, sessions: 0, });
+  }
 });
 
 app.get('/api/user-stats', (req, res) => {
   res.send(history);
+});
+
+app.get('/api/ping', async (req, res) => {
+  try {
+    let data = await fs.readFile(path.resolve(__dirname, 'config.json'));
+    velops = JSON.parse(data.toString()).velops;
+    let pings = await Promise.all(velops.filter(h => h.active).map(h => ping.promise.probe(h.ip, { timeout: 1, })));
+    res.send({ success: true, pings: velops.filter(h => h.active).map((h, i) => ({ ...h, alive: pings[i].alive, })), });
+  } catch (e) {
+    console.log(e);
+    res.send({ success: false, error: 'some error occurred', });
+  }
 });
 
 app.delete('/api/kick', async (req, res) => {
@@ -163,38 +184,49 @@ app.delete('/api/kick', async (req, res) => {
 });
 
 app.get('/', async (req, res) => {
-  res.render('index', { profiles: (await getProfiles()).map(p => p.name), });
-  // res.render('index', { profiles: [ 'a', 'b', 'c', ], });
+  if (!TESTING) {
+    res.render('index', { profiles: (await getProfiles()).map(p => p.name), });
+  } else {
+    res.render('index', { profiles: [ 'a', 'b', 'c', ], });
+  }
 });
 
 app.get('/users', async (req, res) => {
-  let users = await google.authorize(creds, google.getUsers, config.sheets.id, config.sheets.table);
-  for (let i = 0; i < users.length; i++) {
-    users[i].sessions = (await getActiveSessions(users[i].username)).length;
+  let users;
+  if (!TESTING) {
+    users = await google.authorize(creds, google.getUsers, config.sheets.id, config.sheets.table);
+    for (let i = 0; i < users.length; i++) {
+      users[i].sessions = (await getActiveSessions(users[i].username)).length;
+    }
+  } else {
+    users = [{
+      boothId: '-',
+      customerName: 'test',
+      username: 'test',
+      password: 'password1234',
+      profile: 'Velop-15',
+      sessions: 2,
+    },{
+      boothId: '-',
+      customerName: 'karli',
+      username: 'karli',
+      password: 'iKarli',
+      profile: 'Velop-Unlimited',
+      sessions: 1,
+    }];
   }
-  // let users = [{
-  //   boothId: '-',
-  //   customerName: 'test',
-  //   username: 'test',
-  //   password: 'password1234',
-  //   profile: 'Velop-15',
-  //   sessions: 2,
-  // },{
-  //   boothId: '-',
-  //   customerName: 'karli',
-  //   username: 'karli',
-  //   password: 'iKarli',
-  //   profile: 'Velop-Unlimited',
-  //   sessions: 1,
-  // }];
   res.render('users', { users, });
 });
 
 // collect data on number of connected users
 setInterval(async () => {
-  history = [...history.slice(-60*24), (await getActiveSessions()).length,];
-  // history = [...history.slice(-60*24), Math.floor(Math.random()*10),];
-}, 1000*60);
+  if (!TESTING) {
+    history = [...history.slice(-30*2*12), (await getActiveSessions()).length,];
+  } else {
+    history = [...history.slice(-30*2*12), Math.floor(Math.random()*10),];
+  }
+  console.log(`[*] Updated history @ ${new Date().toTimeString()}`)
+}, 1000*30);
 
 app.use('/', express.static(path.resolve(__dirname, 'public')));
 app.listen(config.port, ()=>console.log(`[+] Listening on http://localhost:${config.port} ... `));

@@ -28,6 +28,7 @@
   - [Wi-Fi](#wi-fi)
   - [Mgm](#mgm)
   - [Sheets](#sheets)
+  - [Velops](#velops)
 - [🌍 How to Google Sheets](#-how-to-google-sheets)
 - [🔐 How to credentials.json](#-how-to-credentialsjson)
 
@@ -147,7 +148,7 @@ Simply open the users panel from the main web page or by entering its URL (`loca
       {
           "name": "Center", // Displayname in ping-monitor
           "ip": "10.20.1.0", // IP-Address to be tested
-          "active": true // Whether the velop is currently in use and therefshould be tested for
+          "active": true // in use?
       }
   ]
 }
@@ -202,6 +203,18 @@ This is the "database" for the user accounts. It is just a Google spreadsheet to
 | `table`        | the table to which data should be added |
 
 *View [the next section](#how-to-google-sheets) for more info.*
+
+### Velops
+
+List of all velops. All Velops that are marked active will be tested in the ping monitor. In the event that one stops working, it will be displaed on the dashboard.
+
+***@KaindorfGroup**: When we talk about Velops, we also mean the backup Velops, the Client Bridges/Routing Bridges and the MGM AP*
+
+| attribute name | attribute value                         |
+| -------------- | --------------------------------------- |
+| `name`         | displayname of the Velop                |
+| `ip`           | ip address of the Velop                 |
+| `active`       | true if the Velop is currently in use   |
 
 ## 🌍 How to Google Sheets
 

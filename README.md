@@ -122,7 +122,7 @@ Simply open the users panel from the main web page or by entering its URL (`loca
 
 ## 🖊 How to `config.json`
 
-```json
+```js
 {
     "port": 1234, // The Port of the Backend
     "printer": "<Printer-IP>", // The IP of the Receipt Printer

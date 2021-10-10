@@ -108,7 +108,7 @@ Simply open the users panel from the main web page or by entering its URL (`loca
 
 ### Troubleshooting
 
-**1.** If you get the following warning when trying to start the server
+**1.** If you get the following warning or any other sort of `UnhandledPromiseRejectionWarning` warning when trying to start the server ...
 
 ![wrongnw](media/wrongnw.png)
 

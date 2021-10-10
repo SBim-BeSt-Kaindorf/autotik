@@ -131,12 +131,19 @@ body > article .host-ping {
   align-items: center;
   color: #fff;
   margin: .2em;
+  cursor: default;
+  user-select: none;
+  transition: .2s ease;
+}
+
+body > article .host-ping:hover {
+  transform: scale(1.05);
 }
 
 body > article .host-ping.alive {
-  background-color: #00FF64;
+  background-color: #00c04d;
 }
 
 body > article .host-ping.dead {
-  background-color: #FF004F;
+  background-color: #e7073f;
 }

@@ -164,6 +164,7 @@ app.delete('/api/kick', async (req, res) => {
 
 app.get('/', async (req, res) => {
   res.render('index', { profiles: (await getProfiles()).map(p => p.name), });
+  // res.render('index', { profiles: [ 'a', 'b', 'c', ], });
 });
 
 app.get('/users', async (req, res) => {
@@ -171,6 +172,21 @@ app.get('/users', async (req, res) => {
   for (let i = 0; i < users.length; i++) {
     users[i].sessions = (await getActiveSessions(users[i].username)).length;
   }
+  // let users = [{
+  //   boothId: '-',
+  //   customerName: 'test',
+  //   username: 'test',
+  //   password: 'password1234',
+  //   profile: 'Velop-15',
+  //   sessions: 2,
+  // },{
+  //   boothId: '-',
+  //   customerName: 'karli',
+  //   username: 'karli',
+  //   password: 'iKarli',
+  //   profile: 'Velop-Unlimited',
+  //   sessions: 1,
+  // }];
   res.render('users', { users, });
 });
 

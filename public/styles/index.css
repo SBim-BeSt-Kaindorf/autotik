@@ -34,6 +34,7 @@ body > header svg {
 body > img {
     width: auto;
     height: 5em;
+    margin: 1em 0;
 }
 
 body > h1 {

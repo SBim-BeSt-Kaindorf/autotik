@@ -104,6 +104,10 @@ body > article td svg:hover {
   transform: scale(1.1);
 }
 
+body > article #bt-trash:hover {
+  color: red;
+}
+
 body > article .stats canvas {
   height: 100%;
 }

@@ -185,7 +185,13 @@ app.delete('/api/kick', async (req, res) => {
 
 app.get('/', async (req, res) => {
   if (!TESTING) {
-    res.render('index', { profiles: (await getProfiles()).map(p => p.name), });
+    res.render('index', { profiles: (await getProfiles()).map(p => p.name).sort((a, b) => {
+      a = +a.split('-')[1];
+      b = +b.split('-')[1];
+      if (isNaN(a)) return 1;
+      else if (isNaN(b)) return -1;
+      else return a>b?1:-1;
+    }), });
   } else {
     res.render('index', { profiles: [ 'a', 'b', 'c', ], });
   }

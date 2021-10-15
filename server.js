@@ -117,6 +117,17 @@ function kickUsers(username) {
   });
 }
 
+/**
+ * Deletes a user from the Hotspot
+ * user list.
+ * @param {string} username
+ */
+function deleteUser(username) {
+  return new Promise(async (resolve, reject) => {
+    mikroExec('/ip/hotspot/user/remove', { numbers: username, }).then(resolve).catch(reject);
+  });
+}
+
 app.post('/api/create', (req, res) => {
   if (!req.body.customer || !req.body.uname || !req.body.pwdlen || !req.body.profile) {
     res.send({ error: 'Es fehlen Felder!', });
@@ -180,6 +191,20 @@ app.delete('/api/kick', async (req, res) => {
   
   kickUsers(req.body.username)
     .then(damage => res.send({ success: true, damage, }))
+    .catch(() => res.send({ error: 'something went wrong ... '}));
+});
+
+app.delete('/api/delete', async (req, res) => {
+  if (!req.body.username) {
+    res.send({ error: 'Nutzername fehlt!', });
+    return;
+  }
+  kickUsers(req.body.username)
+    .then(damage => deleteUser(req.body.username)
+                      .then(() => google.authorize(creds, google.deleteUser, config.sheets.id, config.sheets.table, config.sheets.table_gid, req.body.username)
+                                    .then(() => res.send({ success: true, damage, }))
+                                    .catch(() => res.send({ error: 'google went wrong', })))
+                      .catch(() => res.send({ error: 'something else went wrong', })))
     .catch(() => res.send({ error: 'something went wrong ... '}));
 });
 

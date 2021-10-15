@@ -76,7 +76,7 @@ module.exports.addUser = (auth, id, table, user) => {
     spreadsheetId: id,
     range: table,
     valueInputOption: 'USER_ENTERED',
-    resource: { values: [[ user.boothId, user.customerName, user.username, user.password, user.amountString, ],], },
+    resource: { values: [[ user.boothId, user.customerName, user.username, user.password, user.amountString, false, false, ],], },
   }, (err, result) => {
     if (err) return console.error(err);
   });
@@ -95,8 +95,41 @@ module.exports.getUsers = (auth, id, table) => {
       spreadsheetId: id,
       range: `${table}!A2:E`,
     }, (err, res) => {
-      if (err) return console.error(err);
+      if (err) return reject(err);
       resolve(res.data.values.map(r => new User(r[2], User.profileFromAmount(r[4]), r[3], r[1], r[0])));
     });
   });
 };
+
+module.exports.deleteUser = (auth, id, table, table_gid, username) => {
+  const sheets = google.sheets({version: 'v4', auth});
+  return new Promise((resolve, reject) => {
+    module.exports.getUsers(auth, id, table).then(res => {
+      res.map((u, i) => {
+        if (u.username !== username) return;
+        sheets.spreadsheets.batchUpdate({ 
+          auth: auth,
+          spreadsheetId: id,
+          resource: {
+            requests: [
+              {
+                deleteDimension: {
+                  range: {
+                    sheetId: table_gid,
+                    dimension: 'ROWS',
+                    startIndex: i+1,
+                    endIndex: i+2,
+                  },
+                },
+              },
+            ],
+          },
+        }, (err, res) => {
+          if (err) return reject(err);
+          resolve();
+        });
+      });
+      resolve();
+    }).catch(reject);
+  });
+}

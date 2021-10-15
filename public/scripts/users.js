@@ -20,6 +20,22 @@ function kickUsers(username) {
         });
 }
 
+function deleteUser(username) {
+    fetch('/api/delete', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, }),
+    })
+        .then(res => res.json())
+        .then(res => {
+            if (!res.success) return window.alert(`Fehler: ${res.error}`);
+            window.alert(`Erfolg! Nutzer "${username}" wurde gelöscht!`);
+            window.location.reload();
+        });
+}
+
 /**
  * Gets number of active sessions
  * for username.
